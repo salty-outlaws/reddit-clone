@@ -1,28 +1,64 @@
-import { authModalState } from '@/atoms/authModalAtom';
+import { AuthModalState, authModalState } from '@/atoms/authModalAtom';
+import { currentUserState } from '@/atoms/currentUserAtom';
+// import { currentUserState } from '@/atoms/currentUserState';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
 import { m } from 'framer-motion';
-import React, { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 type LoginProps = {
 
 };
 
 const Login: React.FC<LoginProps> = () => {
+    const [error, setError] = useState('')
+    const [isLoading,setIsLoading] = useState(false)
     const setAuthModalState = useSetRecoilState(authModalState)
     const [loginForm, setLoginForm] = useState({
         email: "",
         password: ""
     })
+    const sb = useSupabaseClient()
+
+    const handleClose = () => {
+        setAuthModalState((prev: AuthModalState) => ({
+            ...prev,
+            open: false,
+        }))
+    }
 
     // firebase logic
-    const onSubmit = () => { }
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        setIsLoading(true)
+        setError('')
+        
+        sb.auth.signInWithPassword({
+            email: loginForm.email,
+            password: loginForm.password
+        }).then((v)=>{
+            console.log(v)
+            if (v.data.user !== null){
+                handleClose()
+            }else if (v.error?.message !== ""){
+                setError(JSON.stringify(v.error?.message))
+            }
+        }).catch((e)=>{
+            setError(JSON.stringify(e))
+        }).finally(()=>{
+            setIsLoading(false)
+        })
+    }
+     
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setLoginForm(prev => ({
             ...prev,
             [event.target.name]: event.target.value,
         }))
     }
+
     return (
         <form onSubmit={onSubmit}>
             <Input
@@ -67,7 +103,10 @@ const Login: React.FC<LoginProps> = () => {
                     borderColor: "blue.500"
                 }}
             />
-            <Button type='submit' width="100%" height="36px" mt={2} mb={2}>
+
+            {error && <Text color="red" fontSize="10pt">Error: {error}</Text>}
+
+            <Button type='submit' width="100%" height="36px" mt={2} mb={2} isLoading={isLoading}>
                 Log In
             </Button>
             <Flex fontSize="9pt" justifyContent="center">

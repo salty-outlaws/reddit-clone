@@ -1,5 +1,7 @@
 import { authModalState } from '@/atoms/authModalAtom';
 import { Input, Button, Flex, Text } from '@chakra-ui/react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { sign } from 'crypto';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 
@@ -10,15 +12,55 @@ const SignUp:React.FC = () => {
         password: "",
         confirmPassword: ""
     })
+    const [error, setError] = useState('')
+    const [isLoading,setIsLoading] = useState(false)
+    const sb = useSupabaseClient()
+    const handleClose = () => {
+        setAuthModalState((prev) => ({
+            ...prev,
+            open: false
+        }))
+    }
 
-    // firebase logic
-    const onSubmit = () => { }
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        setIsLoading(true)
+        setError('')
+
+        if (signupForm.password !== signupForm.confirmPassword){
+            setError('Passwords do not match')
+            setIsLoading(false)
+            return
+        }
+       
+        sb.auth.admin.createUser({
+            email: signupForm.email,
+            password: signupForm.password,
+            email_confirm: true
+        }).then((v)=>{
+            console.log(v)
+            console.log(v.error?.message)
+            
+            if (v.data.user !== null){
+                handleClose()
+            }else if (v.error?.message !== ""){
+                setError(JSON.stringify(v.error?.message))
+            }
+            
+        }).catch((e)=>{
+            setError(JSON.stringify(e))
+        }).finally(()=>{
+            setIsLoading(false)
+        })
+    }
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSignupForm(prev => ({
             ...prev,
             [event.target.name]: event.target.value,
         }))
     }
+
     return (
         <form onSubmit={onSubmit}>
             <Input
@@ -87,7 +129,10 @@ const SignUp:React.FC = () => {
                 }}
                 bg="gray.50"
             />
-            <Button type='submit' width="100%" height="36px" mt={2} mb={2}>
+
+            {error && <Text color="red" fontSize="10pt">Error: {error}</Text>}
+
+            <Button type='submit' width="100%" height="36px" mt={2} mb={2} isLoading={isLoading}>
                 Sign Up
             </Button>
             <Flex fontSize="9pt" justifyContent="center">
