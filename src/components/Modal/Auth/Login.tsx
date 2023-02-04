@@ -1,5 +1,4 @@
 import { AuthModalState, authModalState } from '@/atoms/authModalAtom';
-import { currentUserState } from '@/atoms/currentUserAtom';
 // import { currentUserState } from '@/atoms/currentUserState';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
 import { m } from 'framer-motion';
