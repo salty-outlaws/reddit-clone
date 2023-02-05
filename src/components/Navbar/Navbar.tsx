@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
+import Link from 'next/link';
 import React from 'react';
 import Directory from './Directory/Directory';
 import RightContent from './RightContent/RightContent';
@@ -14,9 +15,9 @@ const Navbar:React.FC = () => {
         >
             <Flex align="center"
                 width={{base:"40px", md:"auto"}}
-                mr={{base:0, md:2}}
+                mr={{base:2, md:2}}
             >
-                <b>Reddit</b>
+                <Link href="/"><b>Reddit</b></Link>
             </Flex>
             {user&&<Directory/>}
             <SearchInput user={user}/>
