@@ -24,6 +24,20 @@ ex -
 
 In the above example when loading comments 6,9,22 we also need to load [1,2,3] union [1,2] union [4,5] = [1,2,3,4,5]
 
+### DB Model
+Below is the possible DB Table structure
+```yaml
+comments
+- id: int8
+- body: text
+- created_at: text
+- user_id: text
+- post_id: text
+- isTopLevel: bool
+- reply_of: string|null
+- path: string[]
+```
+
 ### Adding Comment
 When adding a new comment we need to know if that comment is at top level or is a reply of another comment. This info can be stored in form of two columns `isTopLevel` and `reply_of`. Additionally, we need to store the entire path to the respective top level comment in a `path` field.
 
@@ -39,17 +53,18 @@ When adding a new comment we need to know if that comment is at top level or is 
 
 
 ### Getting Comments
-Steps for first load-
+Steps for first load
 - for given post id, find the arrangement (top,new etc)
 - using the arrangement - make an api call to get first N comments (of any level)
 - make another api call retrieving the combined list of parents of the above N comments
 
-### Steps for next load-
+### Steps for second load
 - when user clicks on loadReplies for a given comment(comment_id) - load the comments which have reply_of as comment_id
 
 ### How to find if a comment has replies and how many-
 - Whenever we add a new comment - we have the full path for that comment
 - We can do a bulk update to a `replies_count` field adding 1 to each of the comment in the `path`
+
 
 ### Deleting Comment
 - To keep things simple, when deleting comment - we just mark a field is_deleted=true
