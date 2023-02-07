@@ -38,7 +38,6 @@ const Posts: React.FC<PostsProps> = ({ communityCode, homePage }) => {
                 post_votes: p.post_votes
             })
         })
-        console.log(_posts)
         setPostStateValue(p => ({
             ...p,
             posts: _posts
@@ -72,7 +71,7 @@ const Posts: React.FC<PostsProps> = ({ communityCode, homePage }) => {
             setLoading(false)
         }
         getPosts()
-    }, [user])
+    }, [user,communityCode])
 
     return (
         <>
@@ -85,12 +84,10 @@ const Posts: React.FC<PostsProps> = ({ communityCode, homePage }) => {
                             userID={user?.id||""}
                             post={item}
                             userIsCreator={item.u_id === user?.id}
-                            userVoteValue={undefined}
                             onVote={onVote}
                             onSelectPost={onSelectPost}
                         />
                     ))}
-
                 </Stack>
             }
 

@@ -76,8 +76,6 @@ export const listComments = async (sb: SupabaseClient, postID: string) => {
         ))
     )
 
-    console.log(arrangeComments(comments))
-
     return arrangeComments(comments)
 }
 

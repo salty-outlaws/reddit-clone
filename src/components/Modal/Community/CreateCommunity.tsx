@@ -1,5 +1,5 @@
 import { createCommunity, joinCommunity } from '@/supabase/community';
-import { Box, Button, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
+import { Box, Button, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea } from '@chakra-ui/react';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { createCipheriv } from 'crypto';
 import React, { useState } from 'react';
@@ -13,6 +13,7 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({ open, handleClose }) 
 
     const sb = useSupabaseClient()
     const [communityName, setCommunityName] = useState('')
+    const [communityDescription, setCommunityDescription] = useState('')
     const user = useUser()
     const [communityCode, setCommunityCode] = useState('')
     const [charsRemaining, SetCharsRemaining] = useState(21)
@@ -37,7 +38,7 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({ open, handleClose }) 
             name: communityName,
             code: communityCode,
             created_by: user?user.id:"",
-            description:"This is a new Community"
+            description:communityDescription
         }).then((v)=>{
             if (v.status===201){
                 // join the community as admin
@@ -55,6 +56,10 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({ open, handleClose }) 
                 setError(v.error.details)
             }
         })
+    }
+
+    const handleTAChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setCommunityDescription(e.target.value)
     }
 
     return (
@@ -96,6 +101,15 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({ open, handleClose }) 
                                 <InputLeftAddon bg="white" color="gray.300" borderColor="gray.100">r/</InputLeftAddon>
                                 <Input value={communityCode} disabled />
                             </InputGroup>
+
+
+                            <Text fontWeight={600} fontSize={15} mt={5}>
+                                Description
+                            </Text>
+                            <Text fontSize={11} color="gray.500">
+                                Write about your community
+                            </Text>
+                            <Textarea value={communityDescription} onChange={handleTAChange}/>
                         </ModalBody>
                     </Box>
                     <ModalFooter bg="gray.100" borderRadius="0 0 10px 10px">

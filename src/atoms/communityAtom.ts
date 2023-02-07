@@ -5,6 +5,7 @@ export interface Community{
     name: string
     created_by: string
     description: string
+    created_at?: string
 }
 
 export const selectedCommunity = atom<string>({

@@ -2,7 +2,9 @@ import { Community, selectedCommunity } from '@/atoms/communityAtom';
 import CreatePostLink from '@/components/community/CreatePostLink';
 import Header from '@/components/community/Header';
 import PageContent from '@/components/layout/PageContent';
+import Communities from '@/components/Navbar/Directory/Communities';
 import Posts from '@/components/posts/Posts';
+import CommunitySidebar from '@/components/sidebars/CommunitySidebar';
 import { getCommunity, getUserCommunities } from '@/supabase/community';
 import { Flex, propNames } from '@chakra-ui/react';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
@@ -27,20 +29,15 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityCode }) => {
     const setCurrCommunity = useSetRecoilState(selectedCommunity)
 
     useEffect(() => {
-        try {
-            getCommunity(sb, communityCode).then(v => {
-                if (v.data?.length||0>0){
-                    setCommunity(v.data ? v.data[0] : null)
-                    setCurrCommunity(v.data?v.data[0].code:"Home")
-                }else{
-                    setCurrCommunity("Home")
-                }
-            })
-
-        } catch (e) {
-            console.log("error while getting community ", e)
-        }
-    }, [sb,communityCode,user,setCurrCommunity])
+        getCommunity(sb, communityCode).then(v => {
+            if (v.data?.length||0>0){
+                setCommunity(v.data ? v.data[0] : null)
+                setCurrCommunity(v.data?v.data[0].code:"Home")
+            }else{
+                setCurrCommunity("Home")
+            }
+        })
+    },[user,communityCode])
 
     return (
         <>
@@ -52,7 +49,9 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityCode }) => {
                         <CreatePostLink/>
                         <Posts communityCode={communityCode}/>
                     </>
-                    <>F2</>
+                    <>
+                        <CommunitySidebar community={community}/>
+                    </>
                 </PageContent>
             </Flex>
                 : " Community not found"

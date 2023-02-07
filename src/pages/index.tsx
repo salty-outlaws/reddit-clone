@@ -1,6 +1,7 @@
 import CreatePostLink from '@/components/community/CreatePostLink'
 import PageContent from '@/components/layout/PageContent'
 import Posts from '@/components/posts/Posts'
+import HomeSidebar from '@/components/sidebars/HomeSidebar'
 import { Inter } from '@next/font/google'
 import { useUser } from '@supabase/auth-helpers-react'
 
@@ -14,7 +15,9 @@ export default function Home() {
         {/* <CreatePostLink /> */}
         <Posts communityCode={""} homePage={true}/>
       </>
-      <>F2</>
+      <>
+        <HomeSidebar/>
+      </>
     </PageContent>
   )
 }

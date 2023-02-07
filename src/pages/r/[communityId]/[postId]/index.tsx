@@ -73,9 +73,14 @@ const PostPage: React.FC = () => {
                                 <Button 
                                     onClick={()=>router.back()}
                                     width="70px"
+                                    height="28px"
                                     variant="outline"
+                                    borderRadius={6}
+                                    borderColor="gray.300"
+                                    color="gray.600"
                                 >Back</Button>
                                 <PostItem
+                                    singlePage={true}
                                     key={post.id}
                                     userID={user?.id || ""}
                                     post={post}
@@ -93,7 +98,7 @@ const PostPage: React.FC = () => {
                                 </Flex>
                             </Stack>
                         </>
-                        <>F2</>
+                        <></>
                     </PageContent>
                 </Flex>
                 : "Post not found"
