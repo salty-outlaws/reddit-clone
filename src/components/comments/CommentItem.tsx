@@ -35,17 +35,17 @@ export const CommentItem: React.FC<CommentItemProps> = ({
     }
 
     return (
-        <Flex direction="column">
-            <Flex direction="row" align="center">
-                <Icon fontSize="24" mr={1} color="gray.300" as={FaRedditSquare} />
-                <Text fontWeight={700} fontSize="10pt">{comment.u_name}</Text>
+        <Flex direction="column" >
+            <Flex direction="row" align="center" ml={2}>
+                {/* <Icon fontSize="18" mr={1} color="gray.300" as={FaRedditSquare} p={0} /> */}
+                <Text fontWeight={700} fontSize="10pt">u/{comment.u_name}</Text>
                 <Text ml={4} fontSize="8pt" color="gray.500">{moment(new Date(comment.created_at)).fromNow()}</Text>
             </Flex>
             <Flex direction="column"
                 id="comment"
                 onClick={childToggler}
                 mt={2}
-                ml={2.5}
+                ml={2}
                 borderLeft={"2px solid"}
                 borderLeftColor={showChildren ? "gray.200" : "blue.500"}
             >
@@ -67,7 +67,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                         postID={postID}
                         commentID={comment.id}
                         path={path}
-                        isCommentByUser={user?.id===comment.u_id}
+                        isCommentByUser={user?.id === comment.u_id}
                     />
                 </Flex>
                 {comment.children && comment.children.length == 0 && comment.replies_count > 0 &&

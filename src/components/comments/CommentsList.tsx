@@ -17,7 +17,7 @@ export const CommentsList: React.FC<CommentsListProps> = ({
     // const comments = []
     const user = useUser()
     return (
-        <Flex bg="white" p={2} direction="column" width="100%">
+        <Flex direction="column" width="100%">
             {!hideAddComment && <AddComment
                 user={user}
                 isTopLevel={true}

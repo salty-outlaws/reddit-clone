@@ -51,7 +51,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                         hasUserVoted() === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline
                     }
                     color={hasUserVoted() === 1 ? "brand.100" : "gray.400"}
-                    fontSize={22}
+                    fontSize={18}
                     cursor="pointer"
                     onClick={(e) => { }}
                     ml={2}
@@ -59,6 +59,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                 <Text fontSize="9pt" fontWeight={600}
                     ml={2}
                     mr={2}
+                    color="gray.600"
                 >
                     {0}
                 </Text>
@@ -69,7 +70,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                             : IoArrowDownCircleOutline
                     }
                     color={hasUserVoted() === -1 ? "#4379FF" : "gray.400"}
-                    fontSize={22}
+                    fontSize={18}
                     cursor="pointer"
                     mr={2}
                     onClick={(e) => { }}
@@ -81,9 +82,9 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                     height="28px"
                     onClick={() => setShowReply(!showReply)}
                 >
-                    <Flex direction="row" align="center">
-                        <Icon mr={1} fontSize={18} as={HiOutlineChatBubbleLeft} />
-                        <Text fontSize="9pt">Reply</Text>
+                    <Flex direction="row" align="center" color="gray.600">
+                        <Icon mr={1} fontSize={16} as={HiOutlineChatBubbleLeft} />
+                        <Text fontSize="8pt">Reply</Text>
                     </Flex>
                 </Button>
                 {isCommentByUser && <Button variant="ghost"
@@ -93,9 +94,9 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                     height="28px"
                     onClick={removeComment}
                 >
-                    <Flex direction="row" align="center">
-                        <Icon mr={1} fontSize={18} as={AiOutlineDelete} />
-                        <Text fontSize="9pt">Delete</Text>
+                    <Flex direction="row" align="center" color="gray.600">
+                        <Icon mr={1} fontSize={16} as={AiOutlineDelete} />
+                        <Text fontSize="8pt" >Delete</Text>
                     </Flex>
                 </Button>}
             </Flex>

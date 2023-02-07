@@ -83,12 +83,14 @@ const PostPage: React.FC = () => {
                                     onVote={onVote}
                                     onSelectPost={onSelectPost}
                                 />
-                                <CommentsList
-                                onCommentUpdated={loadComments}
-                                    hideAddComment={false}
-                                    comments={comments}
-                                    postID={postId as string}
-                                />
+                                <Flex p={2} bg="white">
+                                    <CommentsList
+                                    onCommentUpdated={loadComments}
+                                        hideAddComment={false}
+                                        comments={comments}
+                                        postID={postId as string}
+                                    />
+                                </Flex>
                             </Stack>
                         </>
                         <>F2</>
