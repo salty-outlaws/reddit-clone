@@ -56,10 +56,10 @@ const PostPage: React.FC = () => {
             })
         }
 
-        if (!post)
+        if (!post){
             loadPost()
-        if (!comments)
             loadComments()
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     })
 

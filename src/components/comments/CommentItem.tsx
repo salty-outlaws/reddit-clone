@@ -56,6 +56,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                     <Flex
                         ml={3}
                         listStylePosition="inside"
+                        direction="column"
                     >
                         {comment.is_deleted && <Text>[DELETED]</Text>}
                         {!comment.is_deleted && <ReactMarkdown>{comment.body}</ReactMarkdown>}
