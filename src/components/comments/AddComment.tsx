@@ -1,7 +1,9 @@
+import { authModalState } from '@/atoms/authModalAtom';
 import { addComment } from '@/supabase/comments';
 import { Button, Flex, Textarea, Text } from '@chakra-ui/react';
 import { SupabaseClient, User, useSupabaseClient } from '@supabase/auth-helpers-react';
 import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 type AddCommentProps = {
     user: User | null
@@ -23,9 +25,18 @@ const AddComment: React.FC<AddCommentProps> = ({
 
     const [body, setBody] = useState('')
     const sb = useSupabaseClient()
+    const setAuthModalState = useSetRecoilState(authModalState)
     const createComment = () => {
+        if (!user) {
+            setAuthModalState((p) => ({
+                ...p,
+                open: true,
+                view: "login"
+            }))
+            return
+        }
         const commentInput = {
-            u_id: user?.id,
+            u_id: user.id,
             u_name: user?.email!.split("@")[0],
             post_id: postID,
             body: body,

@@ -66,6 +66,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                         postID={postID}
                         commentID={comment.id}
                         path={path}
+                        isCommentByUser={user?.id===comment.u_id}
                     />
                 </Flex>
                 {comment.children && comment.children.length == 0 && comment.replies_count > 0 &&

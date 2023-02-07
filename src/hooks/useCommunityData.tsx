@@ -55,10 +55,9 @@ const useCommunityData = () => {
             })
             setLoading(false)
         }
-        
         if (!user)return
-        fetchUserCommunities()
-    },[user])
+            fetchUserCommunities()
+    },[])
 
     return {
         loading,

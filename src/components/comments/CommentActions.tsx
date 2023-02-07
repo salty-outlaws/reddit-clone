@@ -11,12 +11,13 @@ type CommentActionsProps = {
     user: User | null
     postID: string
     commentID: number
+    isCommentByUser: boolean
     path: number[]
     onCommentUpdated: () => void
 };
 
 const CommentActions: React.FC<CommentActionsProps> = ({
-    user, postID, commentID, path, onCommentUpdated }) => {
+    user, postID, commentID, path, onCommentUpdated, isCommentByUser }) => {
 
     // == actions ==
     // upvote 
@@ -85,7 +86,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                         <Text fontSize="9pt">Reply</Text>
                     </Flex>
                 </Button>
-                <Button variant="ghost"
+                {isCommentByUser && <Button variant="ghost"
                     pr={2}
                     pl={1}
                     borderRadius={5}
@@ -96,7 +97,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                         <Icon mr={1} fontSize={18} as={AiOutlineDelete} />
                         <Text fontSize="9pt">Delete</Text>
                     </Flex>
-                </Button>
+                </Button>}
             </Flex>
             {showReply && <Flex>
                 <AddComment
