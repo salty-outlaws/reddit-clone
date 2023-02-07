@@ -41,19 +41,21 @@ const useCommunityData = () => {
         setLoading(false)
     }
 
-    const fetchUserCommunities = () => {
-        setLoading(true)
-        getUserCommunities(sb, user?.id || "").then(v => {
-            let values: string[] = []
-            v.data?.forEach(v => {
-                values = [...values, v.c_code]
-            })
-            setCommunities(values)
-        })
-        setLoading(false)
-    }
+
 
     useEffect(()=>{
+        const fetchUserCommunities = () => {
+            setLoading(true)
+            getUserCommunities(sb, user?.id || "").then(v => {
+                let values: string[] = []
+                v.data?.forEach(v => {
+                    values = [...values, v.c_code]
+                })
+                setCommunities(values)
+            })
+            setLoading(false)
+        }
+        
         if (!user)return
         fetchUserCommunities()
     },[user])

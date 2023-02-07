@@ -69,16 +69,14 @@ const usePosts = () => {
     const onSelectPost = (communityCode:string,postID:string) => { 
         router.push(`/r/${communityCode}/${postID}`)
     }
-    const onDeletePost = (postID: string) => {
-        return deletePost(sb, postID)
-    }
+
 
     return {
         postStateValue,
         setPostStateValue,
         onVote,
-        onSelectPost,
-        onDeletePost
+        onSelectPost
+        
     }
 }
 export default usePosts;

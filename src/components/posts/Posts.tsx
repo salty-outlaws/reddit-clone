@@ -15,7 +15,7 @@ type PostsProps = {
 };
 
 const Posts: React.FC<PostsProps> = ({ communityCode, homePage }) => {
-    const { postStateValue, setPostStateValue, onVote, onDeletePost, onSelectPost } = usePosts()
+    const { postStateValue, setPostStateValue, onVote, onSelectPost } = usePosts()
     const sb = useSupabaseClient()
     const user = useUser()
     const [loading, setLoading] = useState(false)
@@ -45,33 +45,34 @@ const Posts: React.FC<PostsProps> = ({ communityCode, homePage }) => {
         }))
     }
 
-    const getPosts = () => {
-        setLoading(true)
 
-        if (communityCode==""){
-            listAllPosts(sb,0).then(v => {
-                if (v.error) {
-                    console.log(v.error)
-                    return
-                }
-                setPostInState(v)
-            })
-        }else{
-            listPosts(sb, communityCode,0).then(v => {
-                if (v.error) {
-                    console.log(v.error)
-                    return
-                }
-                setPostInState(v)
-                
-            })
-        }
-        setLoading(false)
-    }
 
     useEffect(() => {
+        const getPosts = () => {
+            setLoading(true)
+    
+            if (communityCode==""){
+                listAllPosts(sb,0).then(v => {
+                    if (v.error) {
+                        console.log(v.error)
+                        return
+                    }
+                    setPostInState(v)
+                })
+            }else{
+                listPosts(sb, communityCode,0).then(v => {
+                    if (v.error) {
+                        console.log(v.error)
+                        return
+                    }
+                    setPostInState(v)
+                    
+                })
+            }
+            setLoading(false)
+        }
         getPosts()
-    }, [communityCode])
+    }, [user])
 
     return (
         <>
@@ -86,7 +87,6 @@ const Posts: React.FC<PostsProps> = ({ communityCode, homePage }) => {
                             userIsCreator={item.u_id === user?.id}
                             userVoteValue={undefined}
                             onVote={onVote}
-                            onDeletePost={onDeletePost}
                             onSelectPost={onSelectPost}
                         />
                     ))}

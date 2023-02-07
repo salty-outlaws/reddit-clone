@@ -21,7 +21,7 @@ import {Comment} from "../../../../atoms/commentAtom"
 const PostPage: React.FC = () => {
     const sb = useSupabaseClient()
     const user = useUser()
-    const { onVote, onDeletePost, onSelectPost } = usePosts()
+    const { onVote, onSelectPost } = usePosts()
 
     const [post, setPost] = useState<Post>()
     const [comments, setComments] = useState<Comment[]>()
@@ -29,36 +29,38 @@ const PostPage: React.FC = () => {
     const router = useRouter()
     const {postId} = router.query
 
-    const loadPost = () => {
-        getPost(sb, postId as string).then(v => {
-            if (v.data?.length || 0 > 0) {
-                const p: any = v.data![0]
-                setPost({
-                    id: p.id,
-                    u_id: p.u_id,
-                    u_name: p.u_name,
-                    c_code: p.c_code,
-                    title: p.title,
-                    body: p.body,
-                    commentCount: p.commentCount,
-                    voteCount: p.voteCount,
-                    imageURL: p.imageURL,
-                    created_at: p.created_at,
-                    post_votes: p.post_votes
-                })
-            }
-        })
-    }
-
     const loadComments = async () => {
         let comms = await listComments(sb,postId as string)
         setComments(comms)
     }
 
     useEffect(() => {
+        const loadPost = () => {
+            getPost(sb, postId as string).then(v => {
+                if (v.data?.length || 0 > 0) {
+                    const p: any = v.data![0]
+                    setPost({
+                        id: p.id,
+                        u_id: p.u_id,
+                        u_name: p.u_name,
+                        c_code: p.c_code,
+                        title: p.title,
+                        body: p.body,
+                        commentCount: p.commentCount,
+                        voteCount: p.voteCount,
+                        imageURL: p.imageURL,
+                        created_at: p.created_at,
+                        post_votes: p.post_votes
+                    })
+                }
+            })
+        }
+    
+
+
         loadPost()
         loadComments()
-    }, [postId, user])
+    }, [postId, user, loadComments])
 
     return (
         <>
@@ -78,7 +80,6 @@ const PostPage: React.FC = () => {
                                     post={post}
                                     userIsCreator={post.u_id === user?.id}
                                     onVote={onVote}
-                                    onDeletePost={onDeletePost}
                                     onSelectPost={onSelectPost}
                                 />
                                 <CommentsList

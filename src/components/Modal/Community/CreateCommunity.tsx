@@ -93,7 +93,7 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({ open, handleClose }) 
                             </Text>
 
                             <InputGroup>
-                                <InputLeftAddon children='r/' bg="white" color="gray.300" borderColor="gray.100"/>
+                                <InputLeftAddon bg="white" color="gray.300" borderColor="gray.100">r/</InputLeftAddon>
                                 <Input value={communityCode} disabled />
                             </InputGroup>
                         </ModalBody>

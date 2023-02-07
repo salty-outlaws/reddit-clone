@@ -40,7 +40,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityCode }) => {
         } catch (e) {
             console.log("error while getting community ", e)
         }
-    }, [communityCode,user])
+    }, [sb,communityCode,user,setCurrCommunity])
 
     return (
         <>
