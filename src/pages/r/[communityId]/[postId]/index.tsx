@@ -60,7 +60,8 @@ const PostPage: React.FC = () => {
 
         loadPost()
         loadComments()
-    }, [postId, user, loadComments])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
 
     return (
         <>
