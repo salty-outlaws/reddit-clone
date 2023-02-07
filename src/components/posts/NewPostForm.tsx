@@ -72,7 +72,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
                 if (!v.error){
                     createPost(sb, newPost).then(v => {
                         if (v.error) {
-                            console.log(v.error)
+                            console.log("error while creating post",v.error)
                             return
                         }
                         router.back()
@@ -82,7 +82,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         } else {
             createPost(sb, newPost).then(v => {
                 if (v.error) {
-                    console.log(v.error)
+                    console.log("error while creating post",v.error)
                     return
                 }
                 router.back()

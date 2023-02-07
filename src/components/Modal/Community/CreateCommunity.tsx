@@ -39,11 +39,10 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({ open, handleClose }) 
             created_by: user?user.id:"",
             description:"This is a new Community"
         }).then((v)=>{
-            console.log(v)
             if (v.status===201){
                 // join the community as admin
                 joinCommunity(sb,communityCode,user?.id||"","admin")?.then(v=>{
-                    console.log(v)
+                    console.log("joined community",v)
                 })
 
                 handleClose()
@@ -52,12 +51,9 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({ open, handleClose }) 
                 SetCharsRemaining(21)
 
             }
-
             if (v.error!==null){
                 setError(v.error.details)
             }
-
-            console.log(v)
         })
     }
 

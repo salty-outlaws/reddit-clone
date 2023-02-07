@@ -38,7 +38,6 @@ const Login: React.FC<LoginProps> = () => {
             email: loginForm.email,
             password: loginForm.password
         }).then((v)=>{
-            console.log(v)
             if (v.data.user !== null){
                 handleClose()
             }else if (v.error?.message !== ""){

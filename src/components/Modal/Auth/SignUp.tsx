@@ -38,10 +38,7 @@ const SignUp:React.FC = () => {
             email: signupForm.email,
             password: signupForm.password,
             email_confirm: true
-        }).then((v)=>{
-            console.log(v)
-            console.log(v.error?.message)
-            
+        }).then((v)=>{            
             if (v.data.user !== null){
                 handleClose()
             }else if (v.error?.message !== ""){

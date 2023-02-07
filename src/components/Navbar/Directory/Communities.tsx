@@ -16,9 +16,6 @@ const Communities: React.FC<CommunitiesProps> = ({ }) => {
     const sb = useSupabaseClient()
     const user = useUser()
 
-    const openCommunity = (code: string) => {
-        console.log("open comm " + code)
-    }
     const {communities} = useCommunityData()
 
     return (
@@ -39,9 +36,7 @@ const Communities: React.FC<CommunitiesProps> = ({ }) => {
                 <Link key={e} href={"/r/" + e}>
                 <MenuItem width="100%" fontSize="10pt"
                     _hover={{ bg: "gray.100" }}
-                    onClick={() => openCommunity(e)}
                 >
-                    
                     <Flex align="center">
                         {e}
                     </Flex>

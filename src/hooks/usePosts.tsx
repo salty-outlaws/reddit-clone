@@ -2,13 +2,14 @@ import { postState } from '@/atoms/postsAtom';
 import { POST_VOTES_TABLE } from '@/supabase/constants';
 import { deletePost } from '@/supabase/post';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useRecoilState } from 'recoil';
-
 
 const usePosts = () => {
 
     const sb = useSupabaseClient()
+    const router = useRouter()
 
     const [postStateValue, setPostStateValue] = useRecoilState(postState)
 
@@ -65,7 +66,9 @@ const usePosts = () => {
         }
         updateVoteInPostState(postID, userID, vote)
     }
-    const onSelectPost = () => { }
+    const onSelectPost = (communityCode:string,postID:string) => { 
+        router.push(`/r/${communityCode}/${postID}`)
+    }
     const onDeletePost = (postID: string) => {
         return deletePost(sb, postID)
     }

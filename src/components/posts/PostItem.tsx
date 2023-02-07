@@ -8,7 +8,7 @@ import {
     Stack,
     Text,
 } from "@chakra-ui/react";
-import { NextRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
@@ -23,38 +23,37 @@ import {
 import { Post } from "../../atoms/postsAtom";
 import Link from "next/link";
 import moment from "moment";
-import { getPostImageLink } from "@/supabase/post";
+import { deletePost, getPostImageLink } from "@/supabase/post";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export type PostItemContentProps = {
     post: Post;
     userID: string
     onVote: (postID: string, userID: string, vote: -1|0|1) => void
-    onDeletePost?: (post: Post) => Promise<boolean>;
+    onDeletePost?: (postID: string) => void;
     userIsCreator: boolean;
-    onSelectPost?: (value: Post, postIdx: number) => void;
-    router?: NextRouter;
-    postIdx?: number;
-    userVoteValue?: number;
-    homePage?: boolean;
+    onSelectPost?: (communityCode: string, postID: string) => void;
+    userVoteValue?: number
+    homePage?: boolean
+    singlePage?: boolean
 };
 
 const PostItem: React.FC<PostItemContentProps> = ({
     post,
     userID,
-    postIdx,
     onVote,
     onSelectPost,
-    router,
     onDeletePost,
     userVoteValue,
     userIsCreator,
     homePage,
+    singlePage
 }) => {
     const sb = useSupabaseClient()
     const [loadingImage, setLoadingImage] = useState(true);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const singlePostView = !onSelectPost; // function not passed to [pid]
+    const router = useRouter()
 
     const countVotes = () =>{
         return post.post_votes!.filter(v=>v.vote==1).length - post.post_votes!.filter(v=>v.vote==-1).length
@@ -81,24 +80,9 @@ const PostItem: React.FC<PostItemContentProps> = ({
         event: React.MouseEvent<HTMLDivElement, MouseEvent>
     ) => {
         event.stopPropagation();
-        setLoadingDelete(true);
-        try {
-            // const success = await onDeletePost(post);
-            // if (!success) throw new Error("Failed to delete post");
-
-            console.log("Post successfully deleted");
-
-            // Could proably move this logic to onDeletePost function
-            if (router) router.back();
-        } catch (error: any) {
-            console.log("Error deleting post", error.message);
-            /**
-             * Don't need to setLoading false if no error
-             * as item will be removed from DOM
-             */
-            setLoadingDelete(false);
-            // setError
-        }
+        await deletePost(sb,post.id,post.imageURL||"").then(v=>{
+            if (singlePage) router.back()
+    })
     };
 
     return (
@@ -109,7 +93,7 @@ const PostItem: React.FC<PostItemContentProps> = ({
             borderRadius={singlePostView ? "4px 4px 0px 0px" : 4}
             cursor={singlePostView ? "unset" : "pointer"}
             _hover={{ borderColor: singlePostView ? "none" : "gray.500" }}
-            onClick={() => onSelectPost && post && onSelectPost(post, postIdx!)}
+            onClick={() => onSelectPost && post && onSelectPost(post.c_code, post.id)}
         >
             <Flex
                 direction="column"
@@ -118,6 +102,7 @@ const PostItem: React.FC<PostItemContentProps> = ({
                 p={2}
                 width="40px"
                 borderRadius={singlePostView ? "0" : "3px 0px 0px 3px"}
+                onClick={(e)=>e.stopPropagation()}
             >
                 <Icon
                     as={
